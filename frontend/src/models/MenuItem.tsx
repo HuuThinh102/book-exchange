@@ -3,6 +3,15 @@ import Link from 'next/link';
 import { Space } from 'antd';
 import { CaretDownOutlined, } from '@ant-design/icons';
 
+
+const handleUploadClick = (e: React.MouseEvent) => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        e.preventDefault();
+        window.location.href = '/login';
+    }
+};
+
 export const categoryItems: MenuProps['items'] = [
     {
         label: <Link href="/cntt-tt">Trường CNTT&TT</Link>,
@@ -49,7 +58,11 @@ export const menuItems: MenuProps['items'] = [
         key: 'categories',
     },
     {
-        label: <Link href="/dang-sach">Đăng sách</Link>,
+        label: (
+            <Link href="/bookUpload" onClick={handleUploadClick}>
+                Đăng sách
+            </Link>
+        ),
         key: 'upload',
     },
 ];
@@ -58,7 +71,7 @@ export const userMenu: MenuProps = {
     items: [
         {
             key: 'myBooks',
-            label: <Link href="/">Sách của tôi</Link>,
+            label: <Link href="/myBook">Sách của tôi</Link>,
         },
         {
             key: 'logout',

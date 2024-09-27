@@ -1,6 +1,7 @@
 import AppHeader from '@/components/Header/AppHeader';
 import AppFooter from '@/components/Footer/AppFooter';
 import { AuthProvider } from '@/app/authContext/page'
+import { BookProvider } from '@/app/bookContext/page';
 
 export default function RootLayout({
   children,
@@ -14,9 +15,11 @@ export default function RootLayout({
       </head>
       <body>
         <AuthProvider>
-          <AppHeader />
-          {children}
-          <AppFooter />
+          <BookProvider>
+            <AppHeader />
+            {children}
+            <AppFooter />
+          </BookProvider>
         </AuthProvider>
       </body>
     </html>

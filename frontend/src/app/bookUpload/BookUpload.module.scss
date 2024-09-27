@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    margin: 3rem 15rem;
+  }
+  
+  .leftSide {
+    flex: 1;
+    padding-right: 20px;
+  }
+  
+  .rightSide {
+    flex: 1;
+
+    Button {
+        margin-bottom: 2rem;
+    }
+  }
+  
+  .previewImage {
+    margin-top: 20px;
+    max-width: 100%;
+}
+  

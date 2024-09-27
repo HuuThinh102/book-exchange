@@ -1,6 +1,7 @@
 import React from 'react';
-import BookList from '@/app/client-components/BookList/BookList';
+import BookList from '@/components/BookList/BookList';
 import styles from '@/styles/home.module.scss'
+
 
 
 const Home: React.FC = () => {
@@ -15,3 +16,5 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
+

@@ -1,7 +1,7 @@
 'use client';
 
-import { Layout, Input, Button, Dropdown, Space, Menu } from 'antd';
-import { SearchOutlined, UserOutlined } from '@ant-design/icons';
+import { Layout, Button, Dropdown, Space, Menu } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import styles from '@/components/Header/header.module.scss';
@@ -10,7 +10,6 @@ import { useAuth } from '@/app/authContext/page';
 import { menuItems, userMenu } from '@/models/MenuItem';
 
 const { Header } = Layout;
-const { Search } = Input;
 
 const AppHeader: React.FC = () => {
     const { isLoggedIn, username, login } = useAuth();
@@ -34,14 +33,6 @@ const AppHeader: React.FC = () => {
                 triggerSubMenuAction={'click'}
                 items={menuItems}
                 className={styles.menu}
-            />
-
-            <Search
-                placeholder="Tìm kiếm sách"
-                allowClear
-                enterButton={<SearchOutlined />}
-                size="large"
-                className={styles.search}
             />
 
             {isLoggedIn ? (
