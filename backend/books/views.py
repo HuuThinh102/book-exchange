@@ -6,10 +6,12 @@ from .serializer import BookSerializer
 from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.exceptions import PermissionDenied
 from django.db.models import Q
+import logging
 
+logger = logging.getLogger(__name__)
 
 class BookViewSet(viewsets.ModelViewSet):
-    queryset = Book.objects.filter(active=True, is_approved=True)
+    queryset = Book.objects.filter(active=True).order_by('-created_at')
     serializer_class = BookSerializer
     parser_classes = [JSONParser, MultiPartParser]
 
@@ -22,9 +24,11 @@ class BookViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user, is_approved=False)
     
     def create(self, request, *args, **kwargs):
+        logger.info(f"Request data: {request.data}")
         try:
             return super().create(request, *args, **kwargs)
         except Exception as e:
+            logger.error(f"Error occurred: {str(e)}")
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
     def update(self, request, *args, **kwargs):

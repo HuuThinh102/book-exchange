@@ -14,7 +14,6 @@ class Book(models.Model):
     authors = models.TextField(default=None)
     publisher = models.CharField(max_length=150, default=None)
     image = models.ImageField(upload_to='books/%Y/%m/', default=None)
-    description = models.TextField(blank=True, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='books')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     is_approved = models.BooleanField(default=False)
