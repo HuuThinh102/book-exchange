@@ -1,3 +1,4 @@
+# models.py
 from django.db import models
 from users.models import User
 
@@ -7,14 +8,16 @@ class ChatRoom(models.Model):
 
     @classmethod
     def get_or_create_room(cls, user1, user2):
-        # Create a unique room name based on user IDs
-        room_name = f"chat_{min(user1.id, user2.id)}_{max(user1.id, user2.id)}"
-        room, created = cls.objects.get_or_create(name=room_name)
-        room.participants.add(user1, user2)
+        room, created = cls.objects.get_or_create(
+            participants__in=[user1, user2],
+            participants__count=2
+        )
+        if created:
+            room.participants.add(user1, user2)
         return room
-    
+
     def __str__(self):
-        return f"Room {self.id}"
+        return f"ChatRoom {self.id}"
 
 class Message(models.Model):
     chatroom = models.ForeignKey(ChatRoom, related_name='messages', on_delete=models.CASCADE)

@@ -107,6 +107,7 @@ CHANNEL_LAYERS = {
     },
 }
 
+
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
