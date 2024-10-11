@@ -14,28 +14,24 @@ const handleUploadClick = (e: React.MouseEvent) => {
 
 export const categoryItems: MenuProps['items'] = [
     {
-        label: <Link href="/cntt-tt">Trường CNTT&TT</Link>,
+        label: <Link href="/categoryPages/cntt">Trường CNTT&TT</Link>,
         key: '1',
     },
     {
-        label: <Link href="/kinh-te">Trường Kinh Tế</Link>,
+        label: <Link href="/categoryPages/nn">Trường Nông nghiệp</Link>,
         key: '2',
     },
     {
-        label: <Link href="/nong-nghiep">Trường Nông nghiệp</Link>,
+        label: <Link href="/categoryPages/kt">Trường Kinh Tế</Link>,
         key: '3',
     },
     {
-        label: <Link href="/thuy-san">Trường Thuỷ sản</Link>,
+        label: <Link href="/categoryPages/bk">Trường Bách khoa</Link>,
         key: '4',
     },
     {
-        label: <Link href="/bach-khoa">Trường Bách khoa</Link>,
+        label: <Link href="/categoryPages/ts">Trường Thuỷ sản</Link>,
         key: '5',
-    },
-    {
-        label: <Link href="/luat">Khoa luật</Link>,
-        key: '6',
     },
 ];
 

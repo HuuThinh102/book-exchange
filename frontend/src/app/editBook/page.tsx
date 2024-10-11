@@ -118,9 +118,10 @@ const EditBookForm: React.FC = () => {
                     <Form.Item label="Danh mục" name="category" rules={[{ required: true, message: 'Vui lòng chọn danh mục' }]}>
                         <Select placeholder="Vui lòng chọn danh mục">
                             <Select.Option value="Trường CNTT&TT">Trường CNTT&TT</Select.Option>
+                            <Select.Option value="Trường Nông nghiệp">Trường Nông nghiệp</Select.Option>
                             <Select.Option value="Trường Kinh tế">Trường Kinh tế</Select.Option>
                             <Select.Option value="Trường Bách khoa">Trường Bách khoa</Select.Option>
-                            <Select.Option value="Trường Nông nghiệp">Trường Nông nghiệp</Select.Option>
+                            <Select.Option value="Trường Thuỷ sản">Trường Thuỷ sản</Select.Option>
                         </Select>
                     </Form.Item>
 

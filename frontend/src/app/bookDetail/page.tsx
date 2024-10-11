@@ -1,18 +1,19 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Button, message } from 'antd';
 import Image from 'next/image';
 import axios from 'axios';
 import styles from './BookDetail.module.scss';
 import { useBookContext } from '../bookContext/page';
+import { useChatContext } from '../chatContext/page';
 import { Book } from '@/models/Book'
+import Link from 'next/link';
 
 const BookDetail: React.FC = () => {
+    const { setChatId } = useChatContext();
     const [book, setBook] = useState<Book | null>(null);
     const { bookId, setBookId } = useBookContext();
-    const router = useRouter();
 
     useEffect(() => {
         const storedBookId = localStorage.getItem('bookId');
@@ -36,9 +37,13 @@ const BookDetail: React.FC = () => {
 
     const handleChat = async () => {
         try {
-            const response = await axios.post(`http://127.0.0.1:8000/chat/`, { recipient: book?.owner });
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login';
+            }
+            const response = await axios.post(`http://127.0.0.1:8000/chat/`, { recipient_id: book?.owner });
             const chatId = response.data.id;
-            router.push(`/chat/${chatId}`);
+            setChatId(chatId);
         } catch (error) {
             message.error('Lỗi khi mở phòng chat: ' + error);
         }
@@ -61,7 +66,9 @@ const BookDetail: React.FC = () => {
                 <p>Người đăng: <strong>{book.owner}</strong></p>
 
                 <Button type="primary" onClick={handleChat}>
-                    💬 Chat với<strong>{book.owner}</strong>
+                    <Link href="/chat">
+                        💬 Chat với <strong>{book.owner}</strong>
+                    </Link>
                 </Button>
             </div>
         </div>

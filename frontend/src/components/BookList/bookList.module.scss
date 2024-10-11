@@ -1,0 +1,44 @@
+.category {
+    margin-bottom: 40px;
+
+    h2 {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+}
+
+.carouselGroup {
+    display: flex !important;
+    justify-content: flex-start; 
+    gap: 10px;
+}
+
+.carouselItem {
+    width: 20%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 20%; /* 5 cuốn mỗi slide */
+
+    @media (max-width: 1200px) {
+        width: 25%; /* 4 cuốn mỗi slide */
+    }
+
+    @media (max-width: 992px) {
+        width: 33.33%; /* 3 cuốn mỗi slide */
+    }
+}
+
+.spinWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+.searchBarWrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}

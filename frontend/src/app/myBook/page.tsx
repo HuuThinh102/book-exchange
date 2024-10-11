@@ -46,6 +46,20 @@ const MyBooks: React.FC = () => {
             message.error('Xóa sách thất bại.' + error);
         }
     };
+    const handleToggleActive = async (id: number, isActive: boolean) => {
+        try {
+            const token = localStorage.getItem('token');
+            await axios.patch(`http://127.0.0.1:8000/books/${id}/`,
+                { active: !isActive },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+            message.success(isActive ? 'Sách đã được ẩn.' : 'Sách đã được hiện.');
+            fetchBooks();
+        } catch (error) {
+            message.error('Thao tác thất bại.' + error);
+        }
+    };
 
     const handleEdit = (id: number) => {
         setBookId(id);
@@ -71,13 +85,31 @@ const MyBooks: React.FC = () => {
                 is_approved ? 'Đã được duyệt ✅' : 'Chưa được duyệt ❌',
         },
         {
+            title: 'Ẩn/Hiện',
+            dataIndex: 'active',
+            key: 'active',
+            render: (active) =>
+                active ? 'Đang được hiển thị' : 'Đang bị ẩn',
+        },
+        {
             title: 'Tuỳ chỉnh',
             key: 'action',
             render: (text, record) => (
                 <Space size="middle">
                     <Link href={`/editBook/`}>
-                        <Button type="link" onClick={() => handleEdit(Number(record.id))}>Chỉnh sửa ✎</Button>
+                        <Button type="link" onClick={() => handleEdit(Number(record.id))}>Chỉnh sửa ✏️</Button>
                     </Link>
+                    <Popconfirm
+                        title={`Bạn có chắc chắn muốn ${record.active ? 'ẩn' : 'hiện'} cuốn sách không?`}
+                        onConfirm={() => handleToggleActive(Number(record.id), record.active ?? true)}
+
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button type="link">
+                            {record.active ? 'Ẩn 📦' : 'Hiện 🌏'}
+                        </Button>
+                    </Popconfirm>
                     <Popconfirm
                         title="Bạn có chắc chắn muốn xóa không?"
                         onConfirm={() => handleDelete(Number(record.id))}

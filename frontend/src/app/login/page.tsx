@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import styles from './LoginForm.module.scss';
 import { useAuth } from '@/app/authContext/page';
 import { LoginFormValues } from '@/models/LoginFormValues';
+import Link from 'next/link';
 
 
 const LoginForm: React.FC = () => {
@@ -38,6 +39,7 @@ const LoginForm: React.FC = () => {
             className={styles.loginForm}
         >
             <h2>Đăng nhập</h2>
+            <p>Bạn chưa có tài khoản? Tạo <Link href={'/register'}>tài khoản</Link></p>
             <Form.Item
                 name="username"
                 label="Tên người dùng"

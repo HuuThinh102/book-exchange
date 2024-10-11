@@ -25,7 +25,7 @@ const AppHeader: React.FC = () => {
     return (
         <Header className={styles.header}>
             <div className={styles.logo}>
-                <Link href="/"><Image alt='logo' src='/logo.png' width={350} height={350} className={styles.logoimage} /></Link>
+                <Link href="/"><Image alt='logo' src='/logo.png' width={350} height={350} className={styles.logoimage} priority={true} /></Link>
             </div>
             <Menu
                 mode="horizontal"
