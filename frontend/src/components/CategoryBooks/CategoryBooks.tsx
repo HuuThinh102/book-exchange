@@ -44,7 +44,7 @@ const CategoryBooks: React.FC<CategoryBooksProps> = ({ categoryId, categoryName 
                     ))}
                 </div>
             ) : (
-                <p>Không có sách nào trong danh mục này.</p>
+                <p style={{ textAlign: 'center' }}>Không có sách nào trong danh mục này.</p>
             )}
         </div>
     );

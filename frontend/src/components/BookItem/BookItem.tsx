@@ -22,7 +22,7 @@ const BookItem: React.FC<Book> = ({ id, title, image }) => {
             className={styles.bookCard}
             cover={
                 <Link href={`/bookDetail/`} passHref onClick={handleBookClick}>
-                    <Image alt={title} src={image || '/bia.jpg'} width={0} height={0} sizes="100vw" priority={true} className={styles.bookCover} />
+                    <Image alt={title} src={image || '/bia.jpg'} width={0} height={0} sizes="100vw" priority className={styles.bookCover} />
                 </Link>
             }
         >

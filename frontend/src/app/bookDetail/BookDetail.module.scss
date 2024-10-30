@@ -4,7 +4,6 @@
     justify-content: center;
 }
 
-
 .bookInfo {
     display: flex;
     flex-direction: column;
@@ -29,4 +28,10 @@
         width: 200px;
         height: 40px;
     }
+}
+.spinWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
 }

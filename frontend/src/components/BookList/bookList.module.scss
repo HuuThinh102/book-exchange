@@ -12,6 +12,7 @@
     display: flex !important;
     justify-content: flex-start; 
     gap: 10px;
+    overflow-x: auto;
 }
 
 .carouselItem {
@@ -20,15 +21,26 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    width: 20%; /* 5 cuốn mỗi slide */
+    width: 20%;
+
 
     @media (max-width: 1200px) {
-        width: 25%; /* 4 cuốn mỗi slide */
+        width: 25%; 
     }
 
     @media (max-width: 992px) {
-        width: 33.33%; /* 3 cuốn mỗi slide */
+        width: 33.33%; 
     }
+
+    @media (max-width: 768px) {
+        width: 50%; 
+    }
+
+    @media (max-width: 576px) {
+        width: 80%; 
+    }
+
+    
 }
 
 .spinWrapper {
@@ -37,6 +49,7 @@
     align-items: center;
     height: 50vh;
 }
+
 .searchBarWrapper {
     display: flex;
     justify-content: center;

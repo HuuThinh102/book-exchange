@@ -14,7 +14,7 @@ const BookUploadForm: React.FC = () => {
     const [file, setFile] = useState<File | null>(null);
     const [form] = Form.useForm();
 
-    const handleImageUpload = (info: UploadChangeParam<UploadFile<File>>) => {
+    const handleImageUpload = async (info: UploadChangeParam<UploadFile<File>>) => {
         const selectedFile = info.fileList[0].originFileObj;
 
         if (selectedFile) {
@@ -25,11 +25,58 @@ const BookUploadForm: React.FC = () => {
         }
     };
 
-    const handleClick = () => {
-        console.log("click");
+    const handleClick = async () => {
+        try {
+            const response = await axios.get(
+                "https://b059-34-124-180-206.ngrok-free.app/",
+                {
+                    headers: {
+                        "ngrok-skip-browser-warning": "69420",
+                    }
+                }
+            );
+
+            let { title, authors, publisher, category }: { title: string, authors: string, publisher: string, category: string } = response.data;
+
+
+            // Loại bỏ cụm "Tác giả sách là" nếu có trong authors
+            if (authors.startsWith("Tác giả sách là")) {
+                authors = authors.replace("Tác giả sách là ", "");
+            }
+
+            // Xử lý category từ file JSON để khớp với các giá trị có sẵn
+            if (category.includes('Danh mục của cuốn sách này là')) {
+                category = category.replace('Danh mục của cuốn sách này là "', '').replace('"', '');
+
+                // Mapping từ tên đầy đủ trong JSON về các giá trị của Select.Option
+                const categoryMapping: { [key: string]: string } = {
+                    'Trường Công nghệ thông tin và Truyền thông': 'Trường CNTT&TT',
+                    'Trường Nông nghiệp': 'Trường Nông nghiệp',
+                    'Trường Kinh tế': 'Trường Kinh tế',
+                    'Trường Bách khoa': 'Trường Bách khoa',
+                    'Trường Thuỷ sản': 'Trường Thuỷ sản',
+                    'Sách khác': 'Sách khác'
+                };
+
+                // Ánh xạ giá trị category từ file JSON sang giá trị của Select.Option
+                category = categoryMapping[category];
+            }
+            // console.log(response.data);
+            form.setFieldsValue({
+                title,
+                authors: Array.isArray(authors) ? authors.join(', ') : authors,
+                publisher,
+                category,
+            });
+
+            message.success('Thông tin sách đã được tự động điền!');
+        } catch (error) {
+            message.error('Không thể lấy thông tin sách.' + error);
+            console.log(error);
+        }
     };
 
-    const onFinish = async (values: { title: string; authors: string; publisher: string; category: string; status: string }) => {
+    const onFinish = async (values: { title: string; authors: string; publisher: string; category: string }) => {
         if (!file) {
             message.error('Vui lòng upload ảnh giáo trình.');
             return;
@@ -39,16 +86,14 @@ const BookUploadForm: React.FC = () => {
         formData.append('authors', values.authors);
         formData.append('publisher', values.publisher);
         formData.append('category', values.category);
-        formData.append('status', values.status);
         formData.append('image', file);
-
 
         try {
             const token = localStorage.getItem('token');
             await axios.post('http://127.0.0.1:8000/books/', formData, {
                 headers: { 'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${token}`, },
             });
-            message.success('Đăng sách thành công!');
+            message.success('Đăng sách thành công! Hãy đợi Admin duyệt sách');
             form.resetFields();
             setImageUrl(null);
 
@@ -101,11 +146,8 @@ const BookUploadForm: React.FC = () => {
                             <Select.Option value="Trường Kinh tế">Trường Kinh tế</Select.Option>
                             <Select.Option value="Trường Bách khoa">Trường Bách khoa</Select.Option>
                             <Select.Option value="Trường Thuỷ sản">Trường Thuỷ sản</Select.Option>
+                            <Select.Option value="Sách khác">Sách khác</Select.Option>
                         </Select>
-                    </Form.Item>
-
-                    <Form.Item label="Tình trạng thái sách" name="status" rules={[{ required: true, message: 'Vui lòng nhập trạng thái sách' }]}>
-                        <Input placeholder="VD: 90%" />
                     </Form.Item>
 
                     <Form.Item>

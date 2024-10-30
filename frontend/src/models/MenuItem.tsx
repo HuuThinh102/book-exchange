@@ -33,6 +33,10 @@ export const categoryItems: MenuProps['items'] = [
         label: <Link href="/categoryPages/ts">Trường Thuỷ sản</Link>,
         key: '5',
     },
+    {
+        label: <Link href="/categoryPages/another">Sách khác</Link>,
+        key: '6',
+    },
 ];
 
 export const menuItems: MenuProps['items'] = [
@@ -74,6 +78,8 @@ export const userMenu: MenuProps = {
             label: (
                 <a onClick={() => {
                     localStorage.removeItem('token');
+                    localStorage.removeItem('refreshToken');
+                    localStorage.removeItem('username');
                     window.location.href = '/';
                 }}>
                     Đăng xuất

@@ -33,17 +33,7 @@ const RegisterForm: React.FC = () => {
                 phone_number: phone,
                 password,
             });
-
-            const response = await axios.post('http://127.0.0.1:8000/users/token/', {
-                username,
-                password,
-            });
-
-            const { access, refresh } = response.data;
-            localStorage.setItem('token', access);
-            localStorage.setItem('refreshToken', refresh);
-
-            message.success('Đăng ký thành công!');
+            message.success('Đăng ký thành công! Hãy vào trang đăng nhập');
             router.push('/');
         } catch (error: unknown) {
             const errorMessage = (error as { response?: { data?: { detail?: string } } })?.response?.data?.detail || 'Đăng ký không thành công!';

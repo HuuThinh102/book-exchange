@@ -29,7 +29,6 @@ const EditBookForm: React.FC = () => {
                         authors: bookData.authors,
                         publisher: bookData.publisher,
                         category: bookData.category,
-                        status: bookData.status,
                     });
                     setImageUrl(bookData.image);
                 } catch (error) {
@@ -52,7 +51,7 @@ const EditBookForm: React.FC = () => {
         }
     };
 
-    const onFinish = async (values: { title: string; authors: string; publisher: string; category: string; status: string }) => {
+    const onFinish = async (values: { title: string; authors: string; publisher: string; category: string }) => {
         if (!file && !imageUrl) {
             message.error('Vui lòng upload ảnh giáo trình.');
             return;
@@ -62,7 +61,6 @@ const EditBookForm: React.FC = () => {
         formData.append('authors', values.authors);
         formData.append('publisher', values.publisher);
         formData.append('category', values.category);
-        formData.append('status', values.status);
         if (file) {
             formData.append('image', file);
         }
@@ -123,10 +121,6 @@ const EditBookForm: React.FC = () => {
                             <Select.Option value="Trường Bách khoa">Trường Bách khoa</Select.Option>
                             <Select.Option value="Trường Thuỷ sản">Trường Thuỷ sản</Select.Option>
                         </Select>
-                    </Form.Item>
-
-                    <Form.Item label="Tình trạng sách" name="status" rules={[{ required: true, message: 'Vui lòng nhập tình trạng sách' }]}>
-                        <Input placeholder="VD: 90%" />
                     </Form.Item>
 
                     <Form.Item>

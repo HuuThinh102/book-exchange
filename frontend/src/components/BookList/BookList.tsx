@@ -15,6 +15,7 @@ const BookList: React.FC = () => {
     const [economicsBooks, setEconomicsBooks] = useState<Book[]>([]);
     const [polyBooks, setPolyBooks] = useState<Book[]>([]);
     const [fisheriesBooks, setFisheriesBooks] = useState<Book[]>([]);
+    const [anotherBooks, setAnotherBooks] = useState<Book[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [searchTerm, setSearchTerm] = useState<string>('');
 
@@ -41,18 +42,20 @@ const BookList: React.FC = () => {
     const ECONOMICS_BOOKS_API = 'http://127.0.0.1:8000/books/by_category/?category_id=3';
     const POLYTECHNIC_BOOKS_API = 'http://127.0.0.1:8000/books/by_category/?category_id=4';
     const FISHERIES_BOOKS_API = 'http://127.0.0.1:8000/books/by_category/?category_id=5';
+    const ANOTHER_BOOKS_API = 'http://127.0.0.1:8000/books/by_category/?category_id=6';
 
     // Hàm fetch dữ liệu cho tất cả các danh mục
     const fetchAllBooks = async () => {
         setLoading(true);
         try {
-            const [newBooksResponse, itBooksResponse, argiBooksRespones, economicsBooksResponse, polyBooksResponse, fisheriesBooksResponse] = await Promise.all([
+            const [newBooksResponse, itBooksResponse, argiBooksRespones, economicsBooksResponse, polyBooksResponse, fisheriesBooksResponse, anotherBooksResponse] = await Promise.all([
                 axios.get(NEW_BOOKS_API),
                 axios.get(IT_BOOKS_API),
                 axios.get(ARGI_BOOKS_API),
                 axios.get(ECONOMICS_BOOKS_API),
                 axios.get(POLYTECHNIC_BOOKS_API),
                 axios.get(FISHERIES_BOOKS_API),
+                axios.get(ANOTHER_BOOKS_API),
             ]);
 
             setNewBooks(newBooksResponse.data.slice(0, maxBooksPerCategory));
@@ -61,6 +64,7 @@ const BookList: React.FC = () => {
             setEconomicsBooks(economicsBooksResponse.data.slice(0, maxBooksPerCategory));
             setPolyBooks(polyBooksResponse.data.slice(0, maxBooksPerCategory));
             setFisheriesBooks(fisheriesBooksResponse.data.slice(0, maxBooksPerCategory));
+            setAnotherBooks(anotherBooksResponse.data.slice(0, maxBooksPerCategory));
         } catch (error) {
             console.error('Error fetching books:', error);
         } finally {
@@ -91,6 +95,8 @@ const BookList: React.FC = () => {
             setEconomicsBooks([]);
             setPolyBooks([]);
             setFisheriesBooks([]);
+            setAnotherBooks([]);
+
         } catch (error) {
             console.error('Error fetching search results:', error);
         } finally {
@@ -151,7 +157,7 @@ const BookList: React.FC = () => {
 
                     {newBooks.length > 0 && (
                         <div className={styles.category}>
-                            <h2>Giáo trình mới đăng</h2>
+                            <h2>Sách mới đăng gần đây</h2>
                             <Carousel
                                 arrows
                                 infinite={false}
@@ -247,6 +253,23 @@ const BookList: React.FC = () => {
                                 slidesToScroll={1}
                             >
                                 {renderCarouselItems(fisheriesBooks)}
+                            </Carousel>
+                        </div>
+                    )}
+
+                    {anotherBooks.length > 0 && (
+                        <div className={styles.category}>
+                            <h2>Sách khác</h2>
+                            <Carousel
+                                arrows
+                                infinite={false}
+                                dots={false}
+                                prevArrow={<CustomPrevArrow />}
+                                nextArrow={<CustomNextArrow />}
+                                slidesToShow={1}
+                                slidesToScroll={1}
+                            >
+                                {renderCarouselItems(anotherBooks)}
                             </Carousel>
                         </div>
                     )}
