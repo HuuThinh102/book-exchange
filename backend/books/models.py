@@ -17,7 +17,6 @@ class Book(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='books')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     is_approved = models.BooleanField(default=False)
-    status = models.CharField(max_length=5)
     active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

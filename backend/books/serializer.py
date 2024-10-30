@@ -10,7 +10,7 @@ class BookSerializer(ModelSerializer):
 
     class Meta:
         model = Book
-        fields = ['id', 'title', 'authors', 'owner', 'publisher', 'image', 'status', 'active', 'created_at', 'category', 'is_approved']
+        fields = ['id', 'title', 'authors', 'owner', 'publisher', 'image', 'active', 'created_at', 'category', 'is_approved']
         extra_kwargs = {'owner': {'read_only': True}, 'is_approved': {'read_only': True}}
 
     def create(self, validated_data):

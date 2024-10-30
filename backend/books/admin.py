@@ -2,9 +2,9 @@ from django.contrib import admin
 from .models import Book, Category
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('title', 'owner', 'is_approved', 'created_at')
+    list_display = ('title', 'owner', 'category','is_approved', 'created_at')
     search_fields = ('title', 'owner__username')
-    list_filter = ('owner__username', 'is_approved')
+    list_filter = ('owner__username', 'is_approved','category')
 
     actions = ['approve_books']
 
