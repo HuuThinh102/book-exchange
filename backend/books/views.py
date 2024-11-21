@@ -5,7 +5,6 @@ from rest_framework.response import Response
 from .serializer import BookSerializer
 from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.exceptions import PermissionDenied
-from django.db.models import Q
 import logging
 from rapidfuzz import fuzz
 from unidecode import unidecode
@@ -83,12 +82,20 @@ class BookViewSet(viewsets.ModelViewSet):
         if query:
             normalized_query = unidecode(query).lower()
             books = Book.objects.filter(is_approved=True)
-            book_scores = [
-                (book, fuzz.token_set_ratio(normalized_query, unidecode(book.title).lower()))
-                for book in books
-            ]
+            book_scores = []
+
+            for book in books:
+                # Compute similarity scores for title and authors
+                title_score = fuzz.partial_ratio(normalized_query, unidecode(book.title).lower())
+                author_score = fuzz.partial_ratio(normalized_query, unidecode(book.authors).lower())
+                max_score = max(title_score, author_score)
+                book_scores.append((book, max_score))
+            
+            # Sort books by score in descending order and filter by threshold
             sorted_books = sorted(book_scores, key=lambda x: x[1], reverse=True)
-            filtered_books = [book[0] for book in sorted_books if book[1] >= 60]
+            filtered_books = [book[0] for book in sorted_books if book[1] >= 75]
+
+            # Serialize and return the results
             serializer = BookSerializer(filtered_books, many=True, context={'request': request})
             similarity_scores = [score for _, score in book_scores]
             print(f"Similarity Scores: {similarity_scores}")
@@ -101,4 +108,4 @@ class UserBookListView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Book.objects.filter(owner=self.request.user)
+        return Book.objects.filter(owner=self.request.user).order_by('-created_at')

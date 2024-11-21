@@ -2,7 +2,6 @@ from django.db import models
 from users.models import User
 
 
-# Category model: Truong CNTT&TT, Truong Kinh te,....
 class Category(models.Model):
     name = models.CharField(max_length=150, unique=True)
 
@@ -23,4 +22,6 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+    def get_owner_phone_number(self):
+        return self.owner.phone_number if self.owner else "Không có số điện thoại"
           
