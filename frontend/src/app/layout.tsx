@@ -3,6 +3,7 @@ import AppFooter from '@/components/Footer/AppFooter';
 import { AuthProvider } from '@/app/authContext/page'
 import { BookProvider } from '@/app/bookContext/page';
 import { ChatProvider } from './chatContext/page';
+import './globals.css'
 
 export default function RootLayout({
   children,

@@ -9,5 +9,7 @@ export interface Book{
     create_at?: string,
     category?: string,
     active?: boolean,
-    is_approved?: boolean;
+    owner_phone_number?: string,
+    is_approved?: boolean,
 }
+

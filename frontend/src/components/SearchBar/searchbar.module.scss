@@ -1,9 +1,12 @@
 .searchBar {
-    margin: 2rem auto;
-    display: flex;
+    margin: 1rem auto;
+    
     .input{
-        margin-right: 2px;
-        margin-left: 10px;
         width: 350px;
+        font-size: 16px;
+    }
+    .button {
+        font-size: 16px;
+        height: 35.14px;
     }
 }

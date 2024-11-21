@@ -22,7 +22,6 @@ const BookList: React.FC = () => {
     const booksPerSlide = 5;
     const maxBooksPerCategory = 10;
 
-    // Tùy chỉnh nút mũi tên
     const CustomPrevArrow = (props: React.ComponentProps<'div'>) => (
         <div {...props} style={{ color: 'gray', left: '-1rem', zIndex: 1 }}>
             <span className="slick-prev" />
@@ -87,7 +86,6 @@ const BookList: React.FC = () => {
         try {
             const searchUrl = `http://127.0.0.1:8000/books/search/?q=${encodeURIComponent(search)}`;
             const response = await axios.get(searchUrl);
-            // Giả sử kết quả tìm kiếm không phân loại theo danh mục, bạn có thể tùy chỉnh theo nhu cầu
             setSearchBooks(response.data.slice(0, maxBooksPerCategory));
             setNewBooks([]);
             setItBooks([]);
@@ -138,9 +136,15 @@ const BookList: React.FC = () => {
                 </div>
             ) : (
                 <div className={styles.bookCategories}>
+                    {searchTerm && searchBooks.length == 0 && (
+                        <div style={{ justifyContent: "center" }}>
+                            <h2>Không tìm thấy cuốn sách phù hợp với kết quả tìm kiếm!!!</h2>
+                        </div>
+                    )}
                     {searchTerm && searchBooks.length > 0 && (
                         <div className={styles.category}>
                             <h2>Kết quả tìm kiếm: </h2>
+                            <div className={styles.line} />
                             <Carousel
                                 arrows
                                 infinite={false}
@@ -158,6 +162,7 @@ const BookList: React.FC = () => {
                     {newBooks.length > 0 && (
                         <div className={styles.category}>
                             <h2>Sách mới đăng gần đây</h2>
+                            <div className={styles.line} />
                             <Carousel
                                 arrows
                                 infinite={false}
@@ -175,6 +180,7 @@ const BookList: React.FC = () => {
                     {itBooks.length > 0 && (
                         <div className={styles.category}>
                             <h2>Giáo trình Trường CNTT&TT</h2>
+                            <div className={styles.line} />
                             <Carousel
                                 arrows
                                 infinite={false}
@@ -192,6 +198,7 @@ const BookList: React.FC = () => {
                     {argiBooks.length > 0 && (
                         <div className={styles.category}>
                             <h2>Giáo trình Trường Nông nghiệp</h2>
+                            <div className={styles.line} />
                             <Carousel
                                 arrows
                                 infinite={false}
@@ -209,6 +216,7 @@ const BookList: React.FC = () => {
                     {economicsBooks.length > 0 && (
                         <div className={styles.category}>
                             <h2>Giáo trình Trường Kinh tế</h2>
+                            <div className={styles.line} />
                             <Carousel
                                 arrows
                                 infinite={false}
@@ -226,6 +234,7 @@ const BookList: React.FC = () => {
                     {polyBooks.length > 0 && (
                         <div className={styles.category}>
                             <h2>Giáo trình Trường Bách khoa</h2>
+                            <div className={styles.line} />
                             <Carousel
                                 arrows
                                 infinite={false}
@@ -243,6 +252,7 @@ const BookList: React.FC = () => {
                     {fisheriesBooks.length > 0 && (
                         <div className={styles.category}>
                             <h2>Giáo trình Trường Thuỷ sản</h2>
+                            <div className={styles.line} />
                             <Carousel
                                 arrows
                                 infinite={false}
@@ -260,6 +270,7 @@ const BookList: React.FC = () => {
                     {anotherBooks.length > 0 && (
                         <div className={styles.category}>
                             <h2>Sách khác</h2>
+                            <div className={styles.line} />
                             <Carousel
                                 arrows
                                 infinite={false}

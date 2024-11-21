@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Input, Button } from 'antd';
+import { Input, Button, Space } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import styles from './searchbar.module.scss';
 
@@ -16,21 +16,23 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 
     return (
         <div className={styles.searchBar}>
-            <Input
-                placeholder="Tìm kiếm sách"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onPressEnter={handleSearch}
-                className={styles.input}
-            />
-            <Button
-                type="primary"
-                icon={<SearchOutlined />}
-                onClick={handleSearch}
-                className={styles.button}
-            >
-                Tìm kiếm
-            </Button>
+            <Space.Compact>
+                <Input
+                    placeholder="Tìm kiếm theo tên sách hoặc tác giả"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onPressEnter={handleSearch}
+                    className={styles.input}
+                />
+                <Button
+                    type="primary"
+                    icon={<SearchOutlined />}
+                    onClick={handleSearch}
+                    className={styles.button}
+                >
+                    Tìm kiếm
+                </Button>
+            </Space.Compact>
         </div>
     );
 };

@@ -5,6 +5,7 @@ import axios from 'axios';
 import BookItem from '../BookItem/BookItem';
 import styles from './categorybooks.module.scss';
 import { Book } from '@/models/Book';
+import Loading from '@/components/Loading/page'
 
 
 interface CategoryBooksProps {
@@ -36,7 +37,7 @@ const CategoryBooks: React.FC<CategoryBooksProps> = ({ categoryId, categoryName 
         <div className={styles.categoryBooksContainer}>
             <h2>{categoryName}</h2>
             {loading ? (
-                <p>Loading...</p>
+                <Loading />
             ) : books.length > 0 ? (
                 <div className={styles.bookList}>
                     {books.map((book) => (

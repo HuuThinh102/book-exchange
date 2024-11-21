@@ -8,6 +8,7 @@ import styles from './MyBooks.module.scss';
 import { Book } from '@/models/Book'
 import Link from 'next/link';
 import { useBookContext } from '@/app/bookContext/page';
+import { EditOutlined, DeleteOutlined, EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons'
 
 const MyBooks: React.FC = () => {
     const [books, setBooks] = useState<Book[]>([]);
@@ -71,11 +72,15 @@ const MyBooks: React.FC = () => {
             dataIndex: 'id',
             key: 'id',
             render: (text, record, index) => index + 1,
+            align: 'center'
         },
         {
             title: 'Tên sách',
             dataIndex: 'title',
             key: 'title',
+            onHeaderCell: () => ({
+                style: { textAlign: 'center' },
+            }),
         },
         {
             title: 'Trạng thái',
@@ -83,6 +88,7 @@ const MyBooks: React.FC = () => {
             key: 'is_approved',
             render: (is_approved) =>
                 is_approved ? 'Đã được duyệt ✅' : 'Chưa được duyệt ❌',
+            align: 'center',
         },
         {
             title: 'Ẩn/Hiện',
@@ -90,14 +96,16 @@ const MyBooks: React.FC = () => {
             key: 'active',
             render: (active) =>
                 active ? 'Đang được hiển thị' : 'Đang bị ẩn',
+            align: 'center',
         },
         {
             title: 'Tuỳ chỉnh',
             key: 'action',
+            align: 'center',
             render: (text, record) => (
                 <Space size="middle">
                     <Link href={`/editBook/`}>
-                        <Button type="link" onClick={() => handleEdit(Number(record.id))}>Chỉnh sửa ✏️</Button>
+                        <Button type="link" onClick={() => handleEdit(Number(record.id))}>Chỉnh sửa <EditOutlined /></Button>
                     </Link>
                     <Popconfirm
                         title={`Bạn có chắc chắn muốn ${record.active ? 'ẩn' : 'hiện'} cuốn sách không?`}
@@ -107,7 +115,7 @@ const MyBooks: React.FC = () => {
                         cancelText="No"
                     >
                         <Button type="link">
-                            {record.active ? 'Ẩn 📦' : 'Hiện 🌏'}
+                            {record.active ? <>Ẩn <EyeInvisibleOutlined /></> : <>Hiện <EyeOutlined /></>}
                         </Button>
                     </Popconfirm>
                     <Popconfirm
@@ -117,7 +125,7 @@ const MyBooks: React.FC = () => {
                         cancelText="No"
                     >
                         <Button type="link" danger>
-                            Xoá 🗑️
+                            Xoá <DeleteOutlined />
                         </Button>
                     </Popconfirm>
                 </Space>

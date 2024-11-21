@@ -4,13 +4,17 @@ import { Space } from 'antd';
 import { CaretDownOutlined, } from '@ant-design/icons';
 
 
-const handleUploadClick = (e: React.MouseEvent) => {
+const handleUploadClick = (e: React.MouseEvent, router: any) => {
     const token = localStorage.getItem('token');
+
     if (!token) {
         e.preventDefault();
-        window.location.href = '/login';
+        router.push('/login');
+    } else {
+        router.push('/bookUpload');
     }
 };
+
 
 export const categoryItems: MenuProps['items'] = [
     {
@@ -39,7 +43,7 @@ export const categoryItems: MenuProps['items'] = [
     },
 ];
 
-export const menuItems: MenuProps['items'] = [
+export const createMenuItems = (router: any): MenuProps['items'] => [
     {
         label: <Link href="/">Trang chủ</Link>,
         key: 'home',
@@ -59,9 +63,9 @@ export const menuItems: MenuProps['items'] = [
     },
     {
         label: (
-            <Link href="/bookUpload" onClick={handleUploadClick}>
+            <a onClick={(e) => handleUploadClick(e, router)}>
                 Đăng sách
-            </Link>
+            </a>
         ),
         key: 'upload',
     },
@@ -71,7 +75,7 @@ export const userMenu: MenuProps = {
     items: [
         {
             key: 'myBooks',
-            label: <Link href="/myBook">Sách của tôi</Link>,
+            label: <Link href="/myBook">Sách đã đăng</Link>,
         },
         {
             key: 'logout',

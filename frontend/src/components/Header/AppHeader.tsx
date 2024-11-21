@@ -7,12 +7,14 @@ import Link from 'next/link';
 import styles from '@/components/Header/header.module.scss';
 import Image from 'next/image';
 import { useAuth } from '@/app/authContext/page';
-import { menuItems, userMenu } from '@/models/MenuItem';
+import { createMenuItems, userMenu } from '@/models/MenuItem';
+import { useRouter } from 'next/navigation';
 
 const { Header } = Layout;
 
 const AppHeader: React.FC = () => {
     const { isLoggedIn, username, login } = useAuth();
+    const router = useRouter();
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -31,7 +33,7 @@ const AppHeader: React.FC = () => {
                 mode="horizontal"
                 defaultSelectedKeys={['home']}
                 triggerSubMenuAction={'click'}
-                items={menuItems}
+                items={createMenuItems(router)}
                 className={styles.menu}
             />
 

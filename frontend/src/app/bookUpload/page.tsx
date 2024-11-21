@@ -13,6 +13,7 @@ const BookUploadForm: React.FC = () => {
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [file, setFile] = useState<File | null>(null);
     const [form] = Form.useForm();
+    const [loading, setLoading] = useState<boolean>(false);
 
     const handleImageUpload = async (info: UploadChangeParam<UploadFile<File>>) => {
         const selectedFile = info.fileList[0].originFileObj;
@@ -25,10 +26,39 @@ const BookUploadForm: React.FC = () => {
         }
     };
 
+    const handleUploadImage = async () => {
+        const data = new FormData();
+        data.append("file", imageUrl || '');
+        data.append(
+            "upload_preset",
+            process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || ''
+        );
+        data.append("cloud_name", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || '');
+        data.append("folder", "Cloudinary-React");
+        try {
+            const response = await fetch(
+                `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+                {
+                    method: "POST",
+                    body: data,
+                    mode: 'no-cors',
+                }
+            );
+            const res = await response.json();
+            console.log(res);
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
     const handleClick = async () => {
+        setLoading(true);
+
         try {
             const response = await axios.get(
-                "https://b059-34-124-180-206.ngrok-free.app/",
+                "https://aebf-34-34-26-248.ngrok-free.app/",
                 {
                     headers: {
                         "ngrok-skip-browser-warning": "69420",
@@ -36,49 +66,33 @@ const BookUploadForm: React.FC = () => {
                 }
             );
 
-            let { title, authors, publisher, category }: { title: string, authors: string, publisher: string, category: string } = response.data;
+            let { authors }: { title: string, authors: string, publisher: string } = response.data;
+            const { title, publisher }: {
+                title: string, publisher: string
+            } = response.data;
 
 
-            // Loại bỏ cụm "Tác giả sách là" nếu có trong authors
-            if (authors.startsWith("Tác giả sách là")) {
-                authors = authors.replace("Tác giả sách là ", "");
-            }
+            authors = authors.replace("\n", ", ");
 
-            // Xử lý category từ file JSON để khớp với các giá trị có sẵn
-            if (category.includes('Danh mục của cuốn sách này là')) {
-                category = category.replace('Danh mục của cuốn sách này là "', '').replace('"', '');
 
-                // Mapping từ tên đầy đủ trong JSON về các giá trị của Select.Option
-                const categoryMapping: { [key: string]: string } = {
-                    'Trường Công nghệ thông tin và Truyền thông': 'Trường CNTT&TT',
-                    'Trường Nông nghiệp': 'Trường Nông nghiệp',
-                    'Trường Kinh tế': 'Trường Kinh tế',
-                    'Trường Bách khoa': 'Trường Bách khoa',
-                    'Trường Thuỷ sản': 'Trường Thuỷ sản',
-                    'Sách khác': 'Sách khác'
-                };
-
-                // Ánh xạ giá trị category từ file JSON sang giá trị của Select.Option
-                category = categoryMapping[category];
-            }
-            // console.log(response.data);
             form.setFieldsValue({
                 title,
                 authors: Array.isArray(authors) ? authors.join(', ') : authors,
                 publisher,
-                category,
             });
 
             message.success('Thông tin sách đã được tự động điền!');
         } catch (error) {
             message.error('Không thể lấy thông tin sách.' + error);
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
     const onFinish = async (values: { title: string; authors: string; publisher: string; category: string }) => {
         if (!file) {
-            message.error('Vui lòng upload ảnh giáo trình.');
+            message.error('Vui lòng chọn ảnh bìa sách!');
             return;
         }
         const formData = new FormData();
@@ -115,18 +129,20 @@ const BookUploadForm: React.FC = () => {
                             beforeUpload={() => false}
                             onChange={handleImageUpload}
                         >
-                            <Button icon={<UploadOutlined />}>Nhấn để tải lên</Button>
+                            <Button icon={<UploadOutlined />} >Nhấn để tải ảnh</Button>
                         </Upload>
                         {imageUrl && (
                             <div className={styles.previewImage}>
                                 <Image src={imageUrl} alt="Bìa sách" width={400} height={450} />
                             </div>
                         )}
+                        <Button onClick={handleUploadImage} type='primary'>Upload ảnh</Button>
                     </Form.Item>
                 </div>
 
                 <div className={styles.rightSide}>
-                    <Button type="primary" onClick={handleClick}><RobotOutlined />Điền thông tin tự động</Button>
+                    <Button type="primary" onClick={handleClick} loading={loading}>{loading ? "Vui lòng đợi trong giây lát" : <><RobotOutlined /> Điền thông tin tự động</>}</Button>
+
                     <Form.Item label="Tên giáo trình" name="title" rules={[{ required: true, message: 'Vui lòng điền tên sách' }]}>
                         <Input placeholder="VD: Nguyên lý máy học" />
                     </Form.Item>
